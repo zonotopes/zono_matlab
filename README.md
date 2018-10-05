@@ -73,5 +73,6 @@ either expressed or implied, of the <project name> project.
 
 ## Acknowledgments
 
-* This work has been funded by professors Marco Grazzi and Giovanni Dosi
-* from Scuola Superiore S.Anna, Pisa, Italy
+This project received financial support from the European Union's Horizon 2020 
+research and innovation programme under grant agreement No. 649186 - ISIGrowth, 
+and from MIUR/University of Bologna, grant RFO17GRAZZI.
