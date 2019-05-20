@@ -35,9 +35,9 @@ function volume = zonotope(star, computeAdditionalStatistics)
 %
 
 %-----------------------------------------------------------------------
-%   ZONOTOPE LIBRARY ver 1.2
+%   ZONOTOPE LIBRARY ver 1.3
 %
-%   Copyright (c) 2017, Marco Cococcioni.
+%   Copyright (c) 2019, Marco Cococcioni.
 %   All rights reserved.
 %
 %   Redistribution and use in source and binary forms, with or without
@@ -65,14 +65,14 @@ if nargin < 2
 end
 
 if computeAdditionalStatistics
-    fprintf('-----------------------------------------------------------------------\n');
-    fprintf('ZONOTOPE LIBRARY VER 1.2                       \n');
-    fprintf('-----------------------------------------------------------------------\n');
+    fprintf('------------------------------------------------------------------------\n');
+    fprintf('ZONOTOPE LIBRARY VER 1.3                                                \n');
+    fprintf('------------------------------------------------------------------------\n');
     fprintf('INPUT: SET OF GENERATORS             \n');
     fprintf('N. of dimensions (including the output): %d\n',size(star,2));
     fprintf('N. of generators: %d\n', size(star,1));
-    fprintf('-----------------------------------------------------------------------\n');
-    fprintf('... the computation of the volume has started (it can take a while) ...\n');
+    fprintf('------------------------------------------------------------------------\n');
+    fprintf('... the computation of the volume has started (it can take a while) ... \n');
 end
   
 
@@ -167,42 +167,45 @@ volume = volume / (factorial(dim)/2); %they are all N dimensional cones. (2, bec
 %et = cputime; % end time for building the zonotope
 
 % Now compute, if requested, additional statistics other than the volume
-if computeAdditionalStatistics,    
-%    % Computing tagi, which is the tangent between each input generator
-%    %   and the (dim-1)-dimensional input space )
-%    tagi = zeros(n,1);    
-%    for g = 1:n
-%        tagi(g) = star(g,end)/sqrt(sum(star(g,1:end-1).^2));
-%    end
-    
-    fprintf('-----------------------------------------------------------------------\n');
-    fprintf('OUTPUT STATISTICS                              \n');
-    fprintf('S1: Total volume:  %g\n', volume);    
-    
+if computeAdditionalStatistics
+   
+    fprintf('------------------------------------------------------------------------\n');
+    fprintf('OUTPUT VECTORS                                                         \n');
+    fprintf('Diagonal:                                                              \n');
     diagonal = sum(star);
-    fprintf('S2: Diagonal: %s\n', num2str(diagonal));
-    
+    fprintf('%g ', diagonal);
+    fprintf('\nTangent between each input generator and the input space:             \n');
+    tagi = zeros(n,1); % tagi is the tangent between each input generator and the input space
+    for g = 1:n
+        tagi(g) = star(g,end)/sqrt(sum(star(g,1:end-1).^2));
+    end
+    fprintf('%g\n', tagi);            
+    fprintf('------------------------------------------------------------------------\n');
+    fprintf('OUTPUT STATISTICS                              \n');
+    fprintf('S1: Total volume:  %g\n', volume);                
     diagonal_norm = sqrt(sum(diagonal.^2));
-    fprintf('S3: Diagonal norm: %g\n', diagonal_norm);
     
+    fprintf('S2: Diagonal norm: %g\n', diagonal_norm);    
     total_length_squared = sum(star(:).^2);
-    fprintf('S4: Sum of squared norms: %g\n', total_length_squared);
     
-    % Compute the Gini index (it depends on volume and diagonal)
-    gini = volume / prod(diagonal);
-    fprintf('S5: Gini index: %g\n', gini);
+    fprintf('S3: Sum of squared norms: %g\n', total_length_squared);
+        
+    gini = volume / prod(diagonal); % Gini index (it depends on volume and diagonal)
+    fprintf('S4: Gini index: %g\n', gini);
     
     tang_diag_input = diagonal(end)/sqrt(sum(diagonal(1:end-1).^2));
-    fprintf('S6: Tangent of angle btw. diagonal and the input plane: %g\n', tang_diag_input);
+    fprintf('S5: Tangent of angle btw. diagonal and the input plane: %g\n', tang_diag_input);
     
     cos1 = diagonal(end) / norm(diagonal);
-    fprintf('S7: Cosine against output: %g\n', cos1 );
+    fprintf('S6: Cosine against output: %g\n', cos1 );
     
     cos2 = diagonal(1)/sqrt(sum(diagonal(1:end-1).^2));
-    fprintf('S8: Cosine of projection of diagonal on input plane with x axis: %g\n', cos2);    
+    fprintf('S7: Cosine of projection of diagonal on input plane with x axis: %g\n', cos2);    
     
-    fprintf('S9: Volume against the cube of the norm of the diagonal: %g\n' , volume/(diagonal_norm^3) );
+    fprintf('S8: Volume against the cube of the norm of the diagonal: %g\n' , volume/(diagonal_norm^3) );
                     
+    
+        
     % ADDITIONAL_STATISTICS (for 3D problems only)
 %     if dim == 3
 %         fprintf('-----------------------------------------------------------------------\n');
@@ -234,11 +237,13 @@ if computeAdditionalStatistics,
 %        fprintf('B11: Volume against diagonal cubed of boundary vectors: %g \n', xxxx);        
         
 %     end % 3D specific statistics
-    fprintf('-----------------------------------------------------------------------\n');
+
+    
+    fprintf('------------------------------------------------------------------------\n');
     %fprintf('Elapsed Time\n%g min\n', (et-bt)/60);
     %fprintf('Elapsed Time\n');
     toc
-    fprintf('-----------------------------------------------------------------------\n');
+    fprintf('------------------------------------------------------------------------\n');
 end % END of additional statistics
 end % END of zonotope main function
 
@@ -253,7 +258,7 @@ if ( pos < 0 )
     res = false;
     return
 end
-if ( counters(pos+1) == ( n - (dim - pos) + 1 ) ),
+if ( counters(pos+1) == ( n - (dim - pos) + 1 ) )
     [res, counters ] = increase(counters, pos-1, dim, n);
     return
 end
