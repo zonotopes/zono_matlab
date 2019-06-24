@@ -162,7 +162,7 @@ while (keep_going) % MAIN LOOP NEEDED TO COMPUTE THE ZONOTOPE
 end % MAIN LOOP
 
 % final correction to the volume
-volume = volume / (factorial(dim)/2); %they are all N dimensional cones. (2, because we are computing half the faces, now)
+volume = volume/dim; 
 
 %et = cputime; % end time for building the zonotope
 
